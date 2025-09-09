@@ -1,0 +1,9 @@
+row,text,status,filepath,error,latency_s
+0,"boom swoosh, cinematic transition, clean tail",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00000_boom-swoosh-cinematic-transition-clean-tail.wav,,4.607
+1,"deep, echoing cave ambience with low rumbles, ominous",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00001_deep-echoing-cave-ambience-with-low-rumbles-ominous.wav,,4.706
+2,"sharp metallic impact with short reverb, trailer hit",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00002_sharp-metallic-impact-with-short-reverb-trailer-hit.wav,,4.525
+3,"quick whoosh pass-by, airy, modern UI feel",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00003_quick-whoosh-pass-by-airy-modern-ui-feel.wav,,4.501
+4,"glass shatter, crisp high-frequency sparkle",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00004_glass-shatter-crisp-high-frequency-sparkle.wav,,4.655
+5,"heavy braam, dark brass, powerful and sustained",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00005_heavy-braam-dark-brass-powerful-and-sustained.wav,,4.506
+6,gentle rain ambience with distant thunder rolls,ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00006_gentle-rain-ambience-with-distant-thunder-rolls.wav,,4.503
+7,"sci-fi UI beep, soft click, subtle",ok,/Users/yuncongyu/Github/tts_apps/API/Elevenlabs/outputs/00007_sci-fi-ui-beep-soft-click-subtle.wav,,8.138
