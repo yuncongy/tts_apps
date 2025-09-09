@@ -109,8 +109,3 @@ python eleven_sfx_downloader.py --mode library   --categories booms,whooshes,bas
 
 ---
 
-## Open Questions (please confirm)
-
-1. The additional metadata columns chosen are: **`file_size_bytes`, `sha256`, `downloaded_at_iso`**. Do you also want **duration**? *(Would require an extra dependency like `mutagen` or `pydub`.)*
-2. Should the Explore downloader filter by keywords or categories (e.g., only “whoosh”, “boom”)?
-3. Is the default `--max-items 60` acceptable, or do you want a different default?
