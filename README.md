@@ -42,13 +42,16 @@ cd ../../
 
 ```
 tts_apps/
-├─ Elevenlabs/
+├─ Elevenlabs_tools/
+|  └─ API/
+│     ├─ app.py
+│     ├─ README.md                     # Detailed instructions for this folder
+│     ├─ requirements.txt
+│     └─ outputs/ (created at runtime)
 │  └─ Downloader/
 │     ├─ sfx_explore_downloader.py     # Playwright-based Explore page automation
 │     ├─ eleven_sfx_downloader.py      # "library" mode: public-category static links
 │     ├─ README.md                     # Detailed instructions for this folder
-│     ├─ requirements.txt
-│     └─ outputs/ (created at runtime)
 └─ TTS_Generation/
    ├─ create_index-tts_ssh.py
    ├─ create_dia_tts_ssh.py
