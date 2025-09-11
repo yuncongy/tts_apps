@@ -1,3 +1,29 @@
+# ==============================================================================
+# File: create_chatterbox_tts_ssh.py
+# Author: Yuncong Yu
+# Created: 07/11/2025
+#
+# Description:
+#   Script for batch TTS (Text-to-Speech) generation using the ChatterboxTTS model.
+#   Handles dataset ingestion from TSV, multiprocessing, logging, and output
+#   audio file management.
+#
+# Usage:
+#   - Configure path variables (BASE_AUDIO_PATH, INPUT_TSV_PATH, etc.)
+#   - Run script to generate synthetic audio clips from text prompts.
+#   - First time run will download model weigths from Hugging Face, might take time.
+#
+# ==============================================================================
+# Change Log:
+# Date        Author            Description
+# ----------  ----------------  -----------------------------------------------
+# 2025-07-11  Yuncong Yu       Initial version created.
+# 2025-07-19  Yuncong Yu       Added randomization of model emotions parameters
+# 2025-08-01  Yuncong Yu       Adjusted distribution of randomized parameters due to some audio emotion issues under large values
+# 2025-09-11  Yuncong Yu       Changes made to santize comments 
+# [YYYY-MM-DD] [Contributor]    [Describe change made...]
+# ==============================================================================
+
 import os
 import csv
 #from pydub import AudioSegment
@@ -15,7 +41,7 @@ import soundfile as sf
 
 from src.chatterbox.tts import ChatterboxTTS
 
-#--------------------------------------------------------------------------------------------
+#-----------------------------------Download Model Weights (optional)---------------------------------
 # In order to avoid hugging face download/visit limit when running model
 # - Run download_model.py - download the model to local dir ./models
 # - change model path in tts.py
@@ -27,29 +53,12 @@ logging.basicConfig(
     handlers=[logging.FileHandler("chatterbox_tts_generation.log"), logging.StreamHandler()]
 )
 
- # Server small Test Run
-# BASE_AUDIO_PATH = '/home/of/test_audio/audio_samples' # path contains all original data
-# INPUT_TSV_PATH = '/home/of/test_audio/test_tsv_input/testrun.tsv' # path to original csv metadata
-# WAV_OUTPUT_DIR = '/home/of/test_audio/output/wav_converted_output'
-# GENERATED_OUTPUT_PATH = '/home/of/test_audio/chatterbox_output/generated_wav' # path to save generated output
-# OUTPUT_CSV_PATH = '/home/of/test_audio/chatterbox_output/generation_log.csv' # records the result of generation
-
-
-
-BASE_AUDIO_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\audio_samples' # path contains all original data
-INPUT_TSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\test_tsv_input\testrun.tsv' # path to subset csv metadata.
-GENERATED_OUTPUT_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output_chatterbox' # path to generated output
-OUTPUT_CSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output_chatterbox\generation_log.csv'
-
-
-"""
-BASE_AUDIO_PATH = '/datasets/cv-corpus/en/clips' # path contains all original data
-INPUT_TSV_PATH = '/datasets/cv-corpus/en/other.tsv' # path to original csv metadata
-GENERATED_OUTPUT_PATH = '/workspace/generated_data/chatterbox-tts_results/output_wav' # path to save generated output
-OUTPUT_CSV_PATH = '/workspace/generated_data/chatterbox-tts_results/generation_log.csv' # records the result of generation'
-WAV_OUTPUT_DIR = '' # folder to store WAV files (if mp3-wav conversion needed, optional)
-"""
-
+#-----------------------------------Path Config---------------------------------
+BASE_AUDIO_PATH = ''        # path contains all original data
+INPUT_TSV_PATH = ''         # path to original csv metadata
+GENERATED_OUTPUT_PATH = ''  # path to save generated output
+OUTPUT_CSV_PATH = ''        # records the result of generation'
+WAV_OUTPUT_DIR = ''         # folder to store WAV files (if mp3-wav conversion needed, optional)
 
 NUM_WORKERS = 2 # set based on GPU memory
 

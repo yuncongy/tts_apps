@@ -1,3 +1,27 @@
+# ==============================================================================
+# File: create_dia_tts_ssh.py
+# Author: Yuncong Yu
+# Created: 07/20/2025
+#
+# Description:
+#   Script for batch TTS (Text-to-Speech) generation using the Dia TTS model.
+#   Handles dataset ingestion from TSV, multiprocessing, logging, and output
+#   audio file management.
+#
+# Usage:
+#   - Configure path variables (BASE_AUDIO_PATH, INPUT_TSV_PATH, etc.)
+#   - Run script to generate synthetic audio clips from text prompts.
+#   - First time run will download model weigths from Hugging Face, might take time.
+#
+# ==============================================================================
+# Change Log:
+# Date        Author            Description
+# ----------  ----------------  -----------------------------------------------
+# 2025-07-20  Yuncong Yu       Initial version created.
+# 2025-08-01  Yuncong Yu       Addjusted conversation generator to ensure each length matches target range
+# 2025-09-11  Yuncong Yu       Changes made to santize comments 
+# [YYYY-MM-DD] [Contributor]    [Describe change made...]
+# ==============================================================================
 import os
 import csv
 from mutagen.mp3 import MP3
@@ -11,7 +35,7 @@ import logging
 
 from dia.model import Dia
 
-#--------------------------------------------------------------------------------------------
+#---------------------------------Download Model Weights (optional)----------------------------------
 # In order to avoid hugging face download/visit limit when running model
 # - Run download_dia.py - download the model to local dir ./models
 #--------------------------------------------------------------------------------------------
@@ -22,29 +46,12 @@ logging.basicConfig(
     handlers=[logging.FileHandler("dia_generation.log"), logging.StreamHandler()]
 )
 
- # Server small Test Run
-"""
-BASE_AUDIO_PATH = '/home/of/test_audio/audio_samples' # path contains all original data
-INPUT_TSV_PATH = '/home/of/test_audio/test_tsv_input/testrun.tsv' # path to original csv metadata
-WAV_OUTPUT_DIR = '/home/of/test_audio/output/wav_converted_output' # not needed unless wav conversion
-GENERATED_OUTPUT_PATH = '/home/of/test_audio/dia_output/generated_mp3' # path to save generated output
-OUTPUT_CSV_PATH = '/home/of/test_audio/dia_output/generation_log.csv' # records the result of generation
-"""
-"""
-BASE_AUDIO_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\audio_samples' # path contains all original data
-INPUT_TSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\test_tsv_input\testrun.tsv' # path to subset csv metadata.
-GENERATED_OUTPUT_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output_dia' # path to generated output
-OUTPUT_CSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output_dia\generation_log.csv'
-"""
-
-
-BASE_AUDIO_PATH = '/datasets/cv-corpus/en/clips' # path contains all original data
-INPUT_TSV_PATH = '/datasets/cv-corpus/en/other.tsv' # path to original csv metadata
-GENERATED_OUTPUT_PATH = '/workspace/generated_data/dia-tts_results/output_wav' # path to save generated output
-OUTPUT_CSV_PATH = '/workspace/generated_data/dia-tts_results/generation_log.csv' # records the result of generation'
-WAV_OUTPUT_DIR = '' # folder to store WAV files (if mp3-wav conversion needed, optional)
-
-
+#-----------------------------------Path Config---------------------------------
+BASE_AUDIO_PATH = ''        # path contains all original data
+INPUT_TSV_PATH = ''         # path to original csv metadata
+GENERATED_OUTPUT_PATH = ''  # path to save generated output
+OUTPUT_CSV_PATH = ''        # records the result of generation'
+WAV_OUTPUT_DIR = ''         # folder to store WAV files (if mp3-wav conversion needed, optional)
 
 BATCH_SIZE = 3 # set based on GPU memory.
 
@@ -55,7 +62,6 @@ EMOTIONS = [
 ]
 
 SPEAKERS = ["[S1]", "[S2]"]
-
 
 
 class DiaGenreator:

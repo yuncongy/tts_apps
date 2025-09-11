@@ -1,3 +1,27 @@
+# ==============================================================================
+# File: create_index-tts_ssh.py
+# Author: Yuncong Yu
+# Created: 06/20/2025
+#
+# Description:
+#   Script for batch TTS (Text-to-Speech) generation using the IndexTTS model.
+#   Handles dataset ingestion from TSV, multiprocessing, logging, and output
+#   audio file management.
+#
+# Usage:
+#   - Configure path variables (BASE_AUDIO_PATH, INPUT_TSV_PATH, etc.)
+#   - Run script to generate synthetic audio clips from text prompts.
+#   - First time run will download model weigths from Hugging Face, might take time.
+#
+# ==============================================================================
+# Change Log:
+# Date        Author            Description
+# ----------  ----------------  -----------------------------------------------
+# 2025-06-20  Yuncong Yu       Initial version created.
+# 2025-09-11  Yuncong Yu       Changes made to santize comments 
+# [YYYY-MM-DD] [Contributor]    [Describe change made...]
+# ==============================================================================
+
 import csv
 import os
 import torch
@@ -12,37 +36,23 @@ import soundfile as sf
 from indextts.infer import IndexTTS
 
 
-# ===================== 配置 =====================
+# ===================== Logging Config =====================
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[logging.FileHandler("index_tts.log"), logging.StreamHandler()]
 )
 
-""" Server small Test Run
-BASE_AUDIO_PATH = '/home/of/test_audio/audio_samples' # path contains all original data
-INPUT_TSV_PATH = '/home/of/test_audio/test_tsv_input/testrun.tsv' # path to original csv metadata
-WAV_OUTPUT_DIR = '/home/of/test_audio/output/wav_converted_output'
-GENERATED_OUTPUT_PATH = '/home/of/test_audio/output/generated_wav' # path to save generated output
-OUTPUT_CSV_PATH = '/home/of/test_audio/output/generation_log.csv' # records the result of generation
-"""
+#-----------------------------------Path Config---------------------------------
 
-BASE_AUDIO_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\audio_samples' # path contains all original data
-INPUT_TSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\test_tsv_input\testrun.tsv' # path to original csv metadata
-WAV_OUTPUT_DIR = r'E:\ML\Datasets\cv-corpus\test_audio\output' # folder to store WAV files (if mp3 conversion needed, optional)
-GENERATED_OUTPUT_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output' # path to save generated output
-OUTPUT_CSV_PATH = r'E:\ML\Datasets\cv-corpus\test_audio\output\generation_log.csv'
+BASE_AUDIO_PATH = ''        # path contains all original data
+INPUT_TSV_PATH = ''         # path to original csv metadata
+WAV_OUTPUT_DIR = ''         # folder to store WAV files (if mp3 conversion needed, optional)
+GENERATED_OUTPUT_PATH = ''  # path to save generated output
+OUTPUT_CSV_PATH = ''        # records the result of generation
 
-""" server run
-BASE_AUDIO_PATH = '/datasets/cv-corpus/en/clips' # path contains all original data
-INPUT_TSV_PATH = '/datasets/cv-corpus/en/other.tsv' # path to original csv metadata
-GENERATED_OUTPUT_PATH = '/workspace/generated_data/output_wav' # path to save generated output
-OUTPUT_CSV_PATH = '/workspace/generated_data/generation_log.csv' # records the result of generation'
-WAV_OUTPUT_DIR = '' # folder to store WAV files (if mp3-wav conversion needed, optional)
-"""
-
-NUM_WORKERS = 5  # change number of workers based on GPU memory
-TARGET_TEXT = ''
+NUM_WORKERS = 5             # change number of workers based on GPU memory
+TARGET_TEXT = ''            # if set, use this text for all samples; if empty, use text from tsv
 
 
 class IndexTTSGenerator:
